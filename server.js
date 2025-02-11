@@ -29,6 +29,25 @@ const git = simpleGit({
 // Middleware pour parser le JSON
 app.use(express.json());
 
+// Configurer le remote repository au démarrage
+async function initializeGit() {
+  try {
+    const remoteUrl = process.env.GIT_REPOSITORY_URL;
+    const currentRemote = await git.getRemotes();
+    
+    if (!currentRemote.find(remote => remote.name === 'origin')) {
+      await git.addRemote('origin', remoteUrl);
+    } else {
+      await git.remote(['set-url', 'origin', remoteUrl]);
+    }
+    console.log('Configuration Git réussie');
+  } catch (error) {
+    console.error('Erreur lors de la configuration Git:', error);
+  }
+}
+
+// Appeler la fonction au démarrage
+initializeGit();
 
 cron.schedule('0 8 * * *', async() => {
 try{
