@@ -1,6 +1,8 @@
+import dotenv from 'dotenv';
 import express from 'express';
 import cron from 'node-cron';
 import simpleGit from 'simple-git';
+dotenv.config();
 
 // Configuration de l'environnement
 const ENV = process.env.NODE_ENV || 'development';
@@ -12,6 +14,11 @@ const git = simpleGit({
   timeout: {
     block: 10000 // 10 secondes
   }
+}).env({
+  GIT_AUTHOR_NAME: process.env.GIT_AUTHOR_NAME,
+  GIT_AUTHOR_EMAIL: process.env.GIT_AUTHOR_EMAIL,
+  GIT_COMMITTER_NAME: process.env.GIT_COMMITTER_NAME,
+  GIT_COMMITTER_EMAIL: process.env.GIT_COMMITTER_EMAIL
 });
 
 // Middleware pour parser le JSON
