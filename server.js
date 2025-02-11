@@ -1,9 +1,18 @@
 import express from 'express';
 import cron from 'node-cron';
 import simpleGit from 'simple-git';
+
+// Configuration de l'environnement
+const ENV = process.env.NODE_ENV || 'development';
+const port = process.env.PORT || 3002;
+
 const app = express();
-const port = 3002;
-const git = simpleGit()
+const git = simpleGit({
+  maxConcurrentProcesses: 1,
+  timeout: {
+    block: 10000 // 10 secondes
+  }
+});
 
 // Middleware pour parser le JSON
 app.use(express.json());
