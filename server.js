@@ -13,6 +13,11 @@ const git = simpleGit({
   maxConcurrentProcesses: 1,
   timeout: {
     block: 10000 // 10 secondes
+  },
+  baseDir: process.cwd(),
+  binary: 'git',
+  ssh: {
+    privateKey: process.env.GIT_SSH_PRIVATE_KEY
   }
 }).env({
   GIT_AUTHOR_NAME: process.env.GIT_AUTHOR_NAME,
@@ -88,5 +93,7 @@ app.post('/trigger-push', async (req, res) => {
 
 // Démarrage du serveur
 app.listen(port, () => {
-  console.log(`Serveur démarré sur http://localhost:${port}`);
+
+  console.log(`Serveur démarré sur http://localhost:${port}`)
+  // ;
 }); 
